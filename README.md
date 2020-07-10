@@ -5,7 +5,11 @@ Environment need:
 ```
 requests
 ```
-- Maybe you need run `pip3 install requests` to install it.
+- Maybe you need run:
+```
+python -m pip install requests
+python -m pip install --upgrade pip
+```
 
 Change your own foundation code in `fund_codes.txt` line by line
 
@@ -19,7 +23,11 @@ Input `python3 main.py` to run it.
 ```
 requests
 ```
-- 你可能需要使用`pip3 install requests`来安装他.
+- 你可能需要运行：
+```
+python -m pip install requests
+python -m pip install --upgrade pip
+```
 
 更改`fund_codes.txt`为你自己的基金代码
 
