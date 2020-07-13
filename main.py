@@ -39,7 +39,7 @@ if __name__ == '__main__':
 
 	get_file_lines('fund_codes.txt', code_list, 'fund')
 
-	print(code_list)
+	# print(code_list)
 	
 
 	win_width, win_height = ui_window.Get_Window_Width_Height(code_list)

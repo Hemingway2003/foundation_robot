@@ -12,7 +12,7 @@ class FoundationData(object):
 	"""docstring for foundation_data"""
 
 	def _get_null_data(self, para):
-		self.fund_code = 'null'
+		# self.fund_code = 'null'
 		self.fund_name = 'null'
 		self.fund_net_value_date = 'null'
 		self.fund_unit_net_value = 'null'
@@ -21,6 +21,7 @@ class FoundationData(object):
 		self.fund_estimated_date = 'null'
 
 	def __init__(self):
+		self.fund_code = 'null'
 		# super(foundation_data, self).__init__()
 		# self.fund_code = 0
 		# self.fund_name = 0
@@ -35,7 +36,8 @@ class FoundationData(object):
 		# Get main url
 		fund_url = fund_url_head + code_num + fund_url_tail
 		
-	
+		self.fund_code = code_num #re.findall(found_quotes, fund_datas[0].split(":")[1])[0]
+		
 		try:
 			# Url request
 			fund_page = requests.get(fund_url)
@@ -67,7 +69,7 @@ class FoundationData(object):
 			# Get rid of quotes
 			found_quotes = re.compile(r'["](.*)["]', re.S)
 
-			self.fund_code = re.findall(found_quotes, fund_datas[0].split(":")[1])[0]
+			
 			self.fund_name = re.findall(found_quotes, fund_datas[1].split(":")[1])[0]
 			self.fund_net_value_date = re.findall(found_quotes, fund_datas[2].split(":")[1])[0]
 			self.fund_unit_net_value = re.findall(found_quotes, fund_datas[3].split(":")[1])[0]

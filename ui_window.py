@@ -12,7 +12,7 @@ global main_ui, window_update_thread, update_event
 default_char_width = 11
 default_char_height = 21
 
-default_title = 'Fund List'
+default_title = 'Stock & Fund List'
 
 default_up_color = 'red'
 default_down_color = 'green'
@@ -106,6 +106,7 @@ class MainWindow(object):
 			real_code = code.split(',')[1]
 
 			if 'split' != code_type:
+				# Stock
 				if 'stock' == code_type:
 					self.stock.get_stock_by_code(real_code)
 
@@ -117,9 +118,13 @@ class MainWindow(object):
 							color = default_up_color
 					else:
 						color = default_unknow_color
-					self.labs[index].config(fg = color, text = self.stock.stock_name + ' : ' + self.stock.current_price + 
+					if 'null' == self.stock.stock_name:
+						self.labs[index].config(fg = color, text = self.stock.stock_code + ' : ' + self.stock.current_price + 
 						' (' + self.stock.current_percent + ' %)' + '-' + self.stock.date)
-
+					else:
+						self.labs[index].config(fg = color, text = self.stock.stock_name + ' : ' + self.stock.current_price + 
+						' (' + self.stock.current_percent + ' %)' + '-' + self.stock.date)
+				# Fund
 				elif 'fund' == code_type:
 					self.fund.get_fund_by_code_num(real_code)
 					if 'null' != self.fund.fund_estimated_percent:
@@ -130,8 +135,11 @@ class MainWindow(object):
 							color = default_up_color
 					else:
 						color = default_unknow_color
-
-					self.labs[index].config(fg = color, text = self.fund.fund_name + ' : ' + self.fund.fund_estimated_value + 
+					if 'null' == self.fund.fund_name:
+						self.labs[index].config(fg = color, text = self.fund.fund_code + ' : ' + self.fund.fund_estimated_value + 
+						' (' + self.fund.fund_estimated_percent + ' %)' + '-' + self.fund.fund_estimated_date)
+					else:
+						self.labs[index].config(fg = color, text = self.fund.fund_name + ' : ' + self.fund.fund_estimated_value + 
 						' (' + self.fund.fund_estimated_percent + ' %)' + '-' + self.fund.fund_estimated_date)
 			index += 1
 		self.init = 1

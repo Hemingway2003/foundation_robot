@@ -26,11 +26,13 @@ class SinaStockData(object):
 		self.current_percent = 'null'
 
 	def __init__(self):
+		self.stock_code = 'null'
 		self._get_null_data(self)
 
 
 	def get_stock_by_code(self, stock_code):
 		stock_url = stock_url_head + stock_code
+		self.stock_code = stock_code
 		try:
 			stock_page = requests.get(stock_url)
 			# Request status judge
@@ -52,7 +54,7 @@ class SinaStockData(object):
 			stock_datas = stock_real_data[0].split(',')
 			# print(stock_datas)
 			# print(len(stock_datas))
-
+			
 			self.stock_name = stock_datas[0]
 			self.today_open_price = stock_datas[1]
 			self.yestoday_close_price = stock_datas[2]
@@ -63,7 +65,10 @@ class SinaStockData(object):
 			# self.sell_one_price = stock_datas[7]
 			self.total_bargain_number = stock_datas[8]
 			self.total_bargain_price = stock_datas[9]
-			self.date = stock_datas[len(stock_datas) - 4] + ' ' + stock_datas[len(stock_datas) - 3]
+			if len(stock_datas) == 33:
+				self.date = stock_datas[len(stock_datas) - 3] + ' ' + stock_datas[len(stock_datas) - 2]
+			elif len(stock_datas) == 34:	
+				self.date = stock_datas[len(stock_datas) - 4] + ' ' + stock_datas[len(stock_datas) - 3]
 			current_percent_f = (float(self.current_price) - float(self.yestoday_close_price)) / float(self.yestoday_close_price) * 100
 			self.current_percent = str(float_scale %current_percent_f)
 
@@ -79,7 +84,7 @@ class SinaStockData(object):
 if __name__ == '__main__':
 	print("Testing this module...")
 	test = SinaStockData()
-	test.get_stock_by_code("sh000001")
+	test.get_stock_by_code("sz399006")
 	# fund_result = get_fund_by_code_num("000001")
 	# print(test.fund_code)
 	# print(test.fund_estimated_date)
