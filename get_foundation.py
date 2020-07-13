@@ -34,13 +34,15 @@ class FoundationData(object):
 	def get_fund_by_code_num(self, code_num):
 		# Get main url
 		fund_url = fund_url_head + code_num + fund_url_tail
-		# Url request
-		fund_page = requests.get(fund_url)
-
+		
+	
 		try:
+			# Url request
+			fund_page = requests.get(fund_url)
 			# Request status judge
 			if fund_page.status_code != 200:
-				print("Get fund url failed")
+				# print(code_num)
+				# print("Get fund url failed")
 				self._get_null_data(self)
 				
 			# print(fund_page.text)
