@@ -12,21 +12,22 @@ def open_list_file(filename):
 def get_file_lines(file_name, list, type):
 	file = open_list_file(file_name)
 
-	while True:
-		file_line = file.readline()
-		if not file_line:
-			break;
-		else:
-			if '#' == file_line[0:1]:
-				continue
+	if file:
+		while True:
+			file_line = file.readline()
+			if not file_line:
+				break;
 			else:
-				# Get rid of the end enter char
-				file_line = file_line.replace('\n','').replace('\r','')
-				list.append(type + ',' + file_line)
-	file.close()
+				if '#' == file_line[0:1]:
+					continue
+				else:
+					# Get rid of the end enter char
+					file_line = file_line.replace('\n','').replace('\r','')
+					list.append(type + ',' + file_line)
+		file.close()
 
-	if 'stock' == type:
-		list.append('split' + ',' + 'split')
+		if 'stock' == type:
+			list.append('split' + ',' + 'split')
 
 if __name__ == '__main__':    
 	print("Testing this module...")

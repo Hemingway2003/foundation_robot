@@ -9,7 +9,7 @@ import get_stock_data_from_sina
 
 global main_ui, window_update_thread, update_event
 
-default_char_width = 10
+default_char_width = 11
 default_char_height = 21
 
 default_title = 'Fund List'
