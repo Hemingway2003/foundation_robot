@@ -8,7 +8,7 @@ import get_foundation
 
 global main_ui, window_update_thread, update_event
 
-default_char_width = 12
+default_char_width = 10
 default_char_height = 22
 
 default_title = 'Fund List'
