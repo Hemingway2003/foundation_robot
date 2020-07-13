@@ -9,7 +9,7 @@ import get_foundation
 global main_ui, window_update_thread, update_event
 
 default_char_width = 12
-default_char_height = 20
+default_char_height = 22
 
 default_title = 'Fund List'
 
@@ -83,9 +83,12 @@ class MainWindow(object):
 		index = 0
 		for code in self.codes:
 			self.fund.get_fund_by_code_num(code)
-			percent = float(self.fund.fund_estimated_percent)
-			if percent < 0.0:
-				color = default_down_color
+			if 'null' != self.fund.fund_estimated_percent:
+				percent = float(self.fund.fund_estimated_percent)
+				if percent < 0.0:
+					color = default_down_color
+				else:
+					color = default_up_color
 			else:
 				color = default_up_color
 
