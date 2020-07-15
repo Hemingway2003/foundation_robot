@@ -4,6 +4,8 @@ import threading
 import tkinter
 import time
 
+import handle_date
+
 import get_foundation
 import get_stock_data_from_sina
 
@@ -99,6 +101,12 @@ class MainWindow(object):
 		window_update_thread.exit()
 
 	def update_labels(self):
+		datedata = handle_date.DateTimeNow()
+		if datedata.get_weekday() > 5:
+			return
+		if datedata.get_passed_second() < datedata.get_special_passed_second(9,0,0) or datedata.get_passed_second() > datedata.get_special_passed_second(15,10,0):
+			return
+
 		index = 0
 		for code in self.codes:
 
@@ -234,7 +242,8 @@ if __name__ == '__main__':
 	print("Testing this module...")
 	
 	# ui_window_main()
-	code_list = ['000001', '000003']
+
+	code_list = ['fund,000001', 'fund,000003']
 
 	
 	thread2 = uithreadControl(2, 'ui_window', 500, 100, code_list)
