@@ -21,7 +21,8 @@ default_down_color = 'green'
 default_unknow_color = 'grey'
 default_split_color = 'yellow'
 
-default_uptime = 600 # unit: second
+default_uptime = 600 #60 #600 # unit: second
+default_fast_uptime = 6
 
 extra_data_len = 30
 
@@ -49,6 +50,7 @@ class MainWindow(object):
 
 		sw = self.win.winfo_screenwidth()
 		sh = self.win.winfo_screenheight()
+		self.firstupdate = 0
 
 		self.win_x = (sw - width) / 2
 		self.win_y = (sh - height) / 2
@@ -101,11 +103,16 @@ class MainWindow(object):
 		window_update_thread.exit()
 
 	def update_labels(self):
-		datedata = handle_date.DateTimeNow()
-		if datedata.get_weekday() > 5:
-			return
-		if datedata.get_passed_second() < datedata.get_special_passed_second(9,0,0) or datedata.get_passed_second() > datedata.get_special_passed_second(15,10,0):
-			return
+		if 1 == self.firstupdate:
+			datedata = handle_date.DateTimeNow()
+			if datedata.get_weekday() > 5:
+				return
+			if datedata.get_passed_second() < datedata.get_special_passed_second(9,20,0) or \
+			(datedata.get_passed_second() > datedata.get_special_passed_second(11,40,0) and datedata.get_passed_second() < datedata.get_special_passed_second(13,20,0)) or \
+			datedata.get_passed_second() > datedata.get_special_passed_second(15,10,0):
+				return
+
+		self.firstupdate = 1
 
 		index = 0
 		for code in self.codes:
@@ -169,12 +176,15 @@ def update_data():
 	while True:
 		main_ui.update_labels()
 		# time.sleep(60)
-		update_event.wait(timeout=60)
+		datedata = handle_date.DateTimeNow()
+
+		if datedata.get_passed_second() > datedata.get_special_passed_second(14,30,0):
+			update_event.wait(timeout=default_fast_uptime)
+		else:
+			update_event.wait(timeout=default_uptime)
+
 		if update_event.isSet():
 			break
-
-
-		
 		# print("1")
 
 def run_ui_window(*window_paras):
