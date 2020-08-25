@@ -42,12 +42,12 @@ if __name__ == '__main__':
 	# print(code_list)
 	
 
-	win_width, win_height = ui_window.Get_Window_Width_Height(code_list)
+	# win_width, win_height = ui_window.Get_Window_Width_Height(code_list)
 
-	print(win_width)
-	print(win_height)
+	# print(win_width)
+	# print(win_height)
 
-	thread1 = ui_window.uithreadControl(2, 'ui_window', win_width, win_height, code_list)
+	thread1 = ui_window.uithreadControl(2, 'ui_window', code_list)
 
 
 	
