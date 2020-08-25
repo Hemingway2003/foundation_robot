@@ -21,13 +21,12 @@ default_down_color = 'green'
 default_unknow_color = 'grey'
 default_split_color = 'yellow'
 
-default_uptime = 600 #60 #600 # unit: second
+default_uptime = 600 #00 #60 #600 # unit: second
 default_fast_uptime = 6
 
 extra_data_len = 30
 
 max_window_height_line = 30
-
 
 class MainWindow(object):
 	"""docstring for MainWindow"""
@@ -94,12 +93,14 @@ class MainWindow(object):
 			code_type = code.split(',')[0]
 
 			if 'split' == code_type:
-				split_data = '-'
+				split_data = ''
 				for j in range(int(20)):
 					split_data += '-'
 				self.labs[i] = tkinter.Label(self.show_frame, fg = default_split_color, bg = 'black', text = split_data)
 			else:
 				self.labs[i] = tkinter.Label(self.show_frame, fg ='red', bg = 'black', text = 'null' + ' : ' + 'null' + ' (' + 'null' + ' %)' + '-' + 'null')
+				self.labs[i].bind('<Button-1>', self._handlerAdaptor(self._label_click, para=code))
+				# print(code.split(',')[1])
 			self.labs[i].grid(row=i, column=0, sticky='news')
 			i = i + 1
 
@@ -122,6 +123,12 @@ class MainWindow(object):
 		# Set the canvas scrolling region
 		canvas.config(scrollregion=canvas.bbox("all"))
 
+	
+	def _handlerAdaptor(self, fun,**kwds):
+		return lambda event,fun=fun,kwds=kwds:fun(event,**kwds)
+
+	def _label_click(self, event, para):
+		print(para)
 
 	def _focus(self, event):
 		self.win.attributes('-alpha', 1)
@@ -134,8 +141,9 @@ class MainWindow(object):
 		self.win.destroy()
 		window_update_thread.exit()
 
+
 	def update_labels(self):
-		print("Update")
+		# print("Update")
 		if 1 == self.firstupdate:
 			datedata = handle_date.DateTimeNow()
 			if datedata.get_weekday() > 5:
@@ -189,34 +197,30 @@ class MainWindow(object):
 						self.labs[index].config(fg = color, text = self.fund.fund_name + ' : ' + self.fund.fund_estimated_value + 
 						' (' + self.fund.fund_estimated_percent + ' %)' + '-' + self.fund.fund_estimated_date)
 			else:
-				split_data = ''
-				for i in range(int(self.labs_max_width / 2)):
-					split_data += '-'
-				self.labs[index].config(text = split_data)
+					split_data = ''
+					for j in range(int(self.labs_max_width / 4)):
+						split_data += '-'
+					self.labs[index].config(text = split_data)
+
 			index += 1
 
 		# Update buttons frames idle tasks to let tkinter calculate buttons sizes
 		self.show_frame.update_idletasks()
-		self.labs_max_width = 0
-		self.lab_max_height = 0
+		# self.labs_max_width = 0
+		# self.lab_max_height = 0
+
 		for lab in self.labs:
 			if self.labs_max_width < lab.winfo_width():
 				self.labs_max_width = lab.winfo_width()
-		if len(self.labs) > max_window_height_line:
-			self.lab_max_height = max_window_height_line * self.labs[0].winfo_height()
-		else:
-			self.lab_max_height = len(self.labs) * self.labs[0].winfo_height()
+			# print(lab.winfo_width())
 
-
+		# if len(self.labs) > max_window_height_line:
+		# 	self.lab_max_height = max_window_height_line * self.labs[0].winfo_height()
+		# else:
+		# 	self.lab_max_height = len(self.labs) * self.labs[0].winfo_height()
 
 		# Resize the canvas frame to show
-		self.basic_frame.config(width=self.labs_max_width + self.vsb.winfo_width(),
-		                    height=self.lab_max_height)
-		# self.init = 1
-		# print("update")
-		# self.fund.get_fund_by_code_num("000001")
-		# self.lab1.config(text = self.fund.fund_name + ' : ' + self.fund.fund_estimated_value + ' (' + self.fund.fund_estimated_percent + ' %)')
-
+		self.basic_frame.config(width=self.labs_max_width + self.vsb.winfo_width())
 
 	def run(self):
 		self.win.mainloop()
@@ -224,7 +228,6 @@ class MainWindow(object):
 
 def update_data():
 	global main_ui, update_event
-	uptime = 1 # second
 
 	update_event = threading.Event()
 
