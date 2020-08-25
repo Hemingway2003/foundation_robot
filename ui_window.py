@@ -26,7 +26,7 @@ default_fast_uptime = 6
 
 extra_data_len = 30
 
-max_window_height_line = 10
+max_window_height_line = 30
 
 
 class MainWindow(object):
@@ -86,8 +86,7 @@ class MainWindow(object):
 		canvas.create_window((0, 0), window=self.show_frame, anchor='nw')
 
 		# Showed labels
-		# self.labs = [tkinter.Label() for i in range(len(codes))]
-		self.labs = []
+		self.labs = [tkinter.Label() for i in range(len(codes))]
 
 		self.codes = codes
 		i = 0
@@ -96,16 +95,12 @@ class MainWindow(object):
 
 			if 'split' == code_type:
 				split_data = '-'
-				for i in range(int(20)):
+				for j in range(int(20)):
 					split_data += '-'
-				lab = tkinter.Label(self.show_frame, fg = default_split_color, bg = 'black', text = split_data)
-				# self.labs[i] = tkinter.Label(self.show_frame, fg = default_split_color, bg = 'black', text = split_data)
+				self.labs[i] = tkinter.Label(self.show_frame, fg = default_split_color, bg = 'black', text = split_data)
 			else:
-				lab = tkinter.Label(self.show_frame, fg ='red', bg = 'black', text = 'null' + ' : ' + 'null' + ' (' + 'null' + ' %)' + '-' + 'null')
-				# self.labs[i] = tkinter.Label(self.show_frame, fg ='red', bg = 'black', text = 'null' + ' : ' + 'null' + ' (' + 'null' + ' %)' + '-' + 'null')
-			lab.grid(row=i, column=0, sticky='news')
-			self.labs.append(lab)
-			# self.labs[i].grid(row=i, column=0, sticky='news')
+				self.labs[i] = tkinter.Label(self.show_frame, fg ='red', bg = 'black', text = 'null' + ' : ' + 'null' + ' (' + 'null' + ' %)' + '-' + 'null')
+			self.labs[i].grid(row=i, column=0, sticky='news')
 			i = i + 1
 
 		# Update buttons frames idle tasks to let tkinter calculate buttons sizes
