@@ -76,9 +76,9 @@ class MainWindow(object):
 		canvas.grid(row=0, column=0, sticky="news")
 
 		# Link a scrollbar to the canvas
-		self.vsb = tkinter.Scrollbar(self.basic_frame, orient="vertical", command=canvas.yview)
-		self.vsb.grid(row=0, column=1, sticky='ns')
-		canvas.configure(yscrollcommand=self.vsb.set)
+		self.scrollbar = tkinter.Scrollbar(self.basic_frame, orient="vertical", command=canvas.yview)
+		self.scrollbar.grid(row=0, column=1, sticky='ns')
+		canvas.configure(yscrollcommand=self.scrollbar.set)
 
 		# Create a frame to show the real elements
 		self.show_frame = tkinter.Frame(canvas, bg="black")
@@ -117,13 +117,28 @@ class MainWindow(object):
 			self.lab_max_height = len(self.labs) * self.labs[0].winfo_height()
 
 		# Resize the canvas frame to show
-		self.basic_frame.config(width=self.labs_max_width + self.vsb.winfo_width(),
+		self.basic_frame.config(width=self.labs_max_width + self.scrollbar.winfo_width(),
 		                    height=self.lab_max_height)
 
 		# Set the canvas scrolling region
 		canvas.config(scrollregion=canvas.bbox("all"))
 
+		self.canvas = canvas
+		# canvas.bind_all('<Button-4>', self._on_mousewheel_up)
+		self.canvas.bind_all('<Button-4>', self._on_mousewheel_up)
+		self.canvas.bind_all('<Button-5>', self._on_mousewheel_down)
+
 	
+	def _on_mousewheel_up(self, event):
+    	# self.canvas.yview_scroll(-1*(event.delta/120), "units")
+		# print(event.delta)
+		self.canvas.yview_scroll(-120, 'units')
+
+	def _on_mousewheel_down(self, event):
+    	# self.canvas.yview_scroll(-1*(event.delta/120), "units")
+		# print(event.delta) 
+		self.canvas.yview_scroll(120, 'units')
+
 	def _handlerAdaptor(self, fun,**kwds):
 		return lambda event,fun=fun,kwds=kwds:fun(event,**kwds)
 
@@ -196,11 +211,11 @@ class MainWindow(object):
 					else:
 						self.labs[index].config(fg = color, text = self.fund.fund_name + ' : ' + self.fund.fund_estimated_value + 
 						' (' + self.fund.fund_estimated_percent + ' %)' + '-' + self.fund.fund_estimated_date)
-			else:
-					split_data = ''
-					for j in range(int(self.labs_max_width / 4)):
-						split_data += '-'
-					self.labs[index].config(text = split_data)
+			# else:
+			# 		split_data = ''
+			# 		for j in range(int(self.labs_max_width / 4)):
+			# 			split_data += '-'
+			# 		self.labs[index].config(text = split_data)
 
 			index += 1
 
@@ -220,7 +235,7 @@ class MainWindow(object):
 		# 	self.lab_max_height = len(self.labs) * self.labs[0].winfo_height()
 
 		# Resize the canvas frame to show
-		self.basic_frame.config(width=self.labs_max_width + self.vsb.winfo_width())
+		self.basic_frame.config(width=self.labs_max_width + self.scrollbar.winfo_width())
 
 	def run(self):
 		self.win.mainloop()
