@@ -1,4 +1,7 @@
 # foundation_robot
+
+Re-editor to `https://gitee.com/Hemingway2003/christopher_fund_monitor`
+
 This is a foundation monitor project
 
 Environment need:
